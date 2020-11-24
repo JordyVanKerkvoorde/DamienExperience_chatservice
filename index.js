@@ -5,7 +5,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const PORT = 3000 || process.env.PORT;
 const formatMessage = require('./utils/messages');
-const { userJoin, getCurrentUser } = require('./utils/users');
+const { userJoin, getCurrentUser, userLeave } = require('./utils/users');
 const systemName = 'DamienSystem'
 
 app.use(express.static(path.join(__dirname, 'webclient')));
@@ -30,7 +30,10 @@ io.on('connection', (socket) => {
 
     //message on user disconnect
     socket.on('disconnect', () => {
-        io.emit('chat message', formatMessage(systemName, 'a user has left the chat'))
+        const user = userLeave(socket.id);
+        if(user){
+            io.to(user.room).emit('chat message', formatMessage(systemName, `${user.username} has left the chat`));
+        }
     });
 
     
