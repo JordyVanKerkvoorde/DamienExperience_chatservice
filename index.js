@@ -24,7 +24,9 @@ app.use((req, res, next) => {
 })
 
 io.on('connection', (socket) => {
+    //console.log('connection')
     socket.on('join room', ({username, room}) => {
+        //console.log('client joined')
         const user = userJoin(socket.id, username, room);
 
         socket.join(user.room);
@@ -37,6 +39,7 @@ io.on('connection', (socket) => {
 
     //listen to message
     socket.on('chat message', (msg) => {
+        //console.log('message received')
         const user = getCurrentUser(socket.id)
         io.to(user.room).emit('chat message', formatMessage(user.username, msg));
     });
