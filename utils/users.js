@@ -3,8 +3,8 @@ const { cpuUsage } = require("process");
 const users = [];
 
 // Join user to chat
-function userJoin(id, username, room){
-    const user = {id, username, room};
+function userJoin(id, username, email, room){
+    const user = {id, username, email, room};
     users.push(user);
     return user;
 }
