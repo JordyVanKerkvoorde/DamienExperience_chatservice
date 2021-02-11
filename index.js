@@ -4,7 +4,7 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server, {
     cors: {
-      origin: 'http://localhost:4200',
+      origin: '*',
       methods: ["GET", "POST"],
       credentials: true,
       transports: ['websocket']
@@ -26,7 +26,7 @@ app.use((req, res, next) => {
 io.on('connection', (socket) => {
     //console.log('connection')
     socket.on('join room', ({username, email, room}) => {
-        //console.log('client joined')
+        console.log('client joined: ' + email)
         const user = userJoin(socket.id, username, email, room);
 
         socket.join(user.room);
